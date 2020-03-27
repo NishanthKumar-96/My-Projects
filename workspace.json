@@ -1,8 +1,128 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "myauthapp": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/myauthapp",
+      "sourceRoot": "apps/myauthapp/src",
+      "prefix": "my-projects",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/myauthapp",
+            "index": "apps/myauthapp/src/index.html",
+            "main": "apps/myauthapp/src/main.ts",
+            "polyfills": "apps/myauthapp/src/polyfills.ts",
+            "tsConfig": "apps/myauthapp/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/myauthapp/src/favicon.ico",
+              "apps/myauthapp/src/assets"
+            ],
+            "styles": ["apps/myauthapp/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/myauthapp/src/environments/environment.ts",
+                  "with": "apps/myauthapp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "myauthapp:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "myauthapp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "myauthapp:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/myauthapp/tsconfig.app.json",
+              "apps/myauthapp/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/myauthapp/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/myauthapp/jest.config.js",
+            "tsConfig": "apps/myauthapp/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/myauthapp/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "myauthapp-e2e": {
+      "root": "apps/myauthapp-e2e",
+      "sourceRoot": "apps/myauthapp-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/myauthapp-e2e/cypress.json",
+            "tsConfig": "apps/myauthapp-e2e/tsconfig.e2e.json",
+            "devServerTarget": "myauthapp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "myauthapp:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/myauthapp-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/myauthapp-e2e/**"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/angular"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -58,6 +178,14 @@
       "library": {
         "linter": "eslint"
       }
+    },
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
     }
-  }
+  },
+  "defaultProject": "myauthapp"
 }

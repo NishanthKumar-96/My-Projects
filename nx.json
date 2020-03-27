@@ -10,5 +10,13 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "myauthapp": {
+      "tags": []
+    },
+    "myauthapp-e2e": {
+      "tags": [],
+      "implicitDependencies": ["myauthapp"]
+    }
+  }
 }
